@@ -1,13 +1,15 @@
 import os
-from flask import Flask, jsonify
+from flask import Flask
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
 
 from resources.user import UserRegister, User, UserLogin, TokenRefresh, UserLogout
 from resources.item import Item, ItemList
 from resources.store import Store, StoreList
+
 from blocklist import BLOCKLIST
 from db import db
+from ma import ma
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
@@ -31,12 +33,12 @@ jwt = JWTManager(app)
 
 @jwt.token_in_blocklist_loader
 def check_if_token_in_blacklist(_decrypted_header, decrypted_body):
-    return decrypted_body["jti"] in BLACKLIST
+    return decrypted_body["jti"] in BLOCKLIST
 
 
 api.add_resource(Item, "/item/<string:name>")
-api.add_resource(ItemList, "/items")
 api.add_resource(Store, "/store/<string:name>")
+api.add_resource(ItemList, "/items")
 api.add_resource(StoreList, "/stores")
 api.add_resource(UserRegister, "/register")
 api.add_resource(User, "/user/<int:user_id>")
@@ -46,4 +48,5 @@ api.add_resource(UserLogout, "/logout")
 
 if __name__ == "__main__":
     db.init_app(app)
+    ma.init_app(app)
     app.run(port=5000, debug=True)
