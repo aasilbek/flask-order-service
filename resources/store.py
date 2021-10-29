@@ -17,20 +17,17 @@ class Store(Resource):
         store = StoreModel.find_by_name(name)
         if store:
             return store_schema.dump(store), 200
-
         return {"message": STORE_NOT_FOUND}, 404
 
     @classmethod
     def post(cls, name: str):
         if StoreModel.find_by_name(name):
             return {"message": NAME_ALREADY_EXISTS.format(name)}, 400
-
         store = StoreModel(name=name)
         try:
             store.save_to_db()
         except:
             return {"message": ERROR_INSERTING}, 500
-
         return store_schema.dump(store), 201
 
     @classmethod
@@ -39,7 +36,6 @@ class Store(Resource):
         if store:
             store.delete_from_db()
             return {"message": STORE_DELETED}, 200
-
         return {"message": STORE_NOT_FOUND}, 404
 
 
