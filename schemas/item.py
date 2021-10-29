@@ -7,6 +7,6 @@ class ItemSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = ItemModel
         load_only = ("store",)
-        dump_only = ("id",)
+        dump_only = ("id", "activated")
         include_fk = True
         load_instance = True

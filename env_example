@@ -1,0 +1,4 @@
+MAILGUN_DOMAIN_NAME =""
+MAILGUN_API_KEY=""
+DATABASE_URL="sqlite:///data.db"
+SECRET_KEY=""
