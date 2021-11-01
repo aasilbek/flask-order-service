@@ -3,15 +3,16 @@ from flask_restful import Resource
 
 from models.user import UserModel
 from oa import github
-from flask import g, request
+from flask import g, request, url_for
 
 
 class GithubLogin(Resource):
     @classmethod
     def get(cls):
+        # return github.authorize(
+        #     callback="http://localhost:5000/login/github/authorized")
         return github.authorize(
-            callback="http://localhost:5000/login/github/authorized")
-
+            callback=url_for("github.authorize", _external=True))
 
 class GithubAuthorize(Resource):
     @classmethod
