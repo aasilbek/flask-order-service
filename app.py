@@ -7,6 +7,8 @@ from flask_restful import Api
 from flask_jwt_extended import JWTManager
 from flask_uploads import configure_uploads
 from marshmallow import ValidationError
+
+load_dotenv(".env",verbose=True)
 from resources.user import (
     UserRegister,
     User,
@@ -18,15 +20,15 @@ from resources.item import Item, ItemList
 from resources.store import Store, StoreList
 from resources.confirmation import Confirmation, ConfirmationByUser
 from resources.image import ImageUpload, Image, AvatarUpload,Avatar
+from resources.github_login import GithubLogin, GithubAuthorize
 from libs.image_helper import IMAGE_SET
 from blocklist import BLOCKLIST
 from db import db
 from ma import ma
-
+from oa import oauth
 app = Flask(__name__)
 
 
-load_dotenv(".env",verbose=True)
 app.config.from_object("default_config")
 app.config.from_envvar("APPLICATION_SETTINGS")
 configure_uploads(app, IMAGE_SET)
@@ -64,8 +66,12 @@ api.add_resource(ImageUpload, "/upload/image")
 api.add_resource(Image, "/image/<string:filename>")
 api.add_resource(AvatarUpload, "/upload/avatar")
 api.add_resource(Avatar, "/avatar/<int:user_id>")
+api.add_resource(GithubLogin, "/login/github")
+api.add_resource(GithubAuthorize, "/login/github/authorized")
+
 db.init_app(app)
 if __name__ == "__main__":
 
     ma.init_app(app)
+    oauth.init_app(app)
     app.run(port=5000, debug=True)
