@@ -1,0 +1,12 @@
+version: "3"
+services:
+  postgres-service:
+    image: postgres:13.2
+    restart: always
+    container_name: "smi3810-postgres"
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    ports:
+      - ${DB_PORT}:5432

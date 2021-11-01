@@ -18,6 +18,7 @@ class UserModel(db.Model):
     confirmation = db.relationship(
         "ConfirmationModel", lazy="dynamic", cascade="all, delete-orphan"
     )
+    phone_number = db.Column(db.String(80))
 
     @property
     def most_recent_confirmation(self) -> "ConfirmationModel":
