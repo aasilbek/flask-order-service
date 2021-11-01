@@ -1,0 +1,4 @@
+import os
+
+DEBUG = False
+SQLALCHEMY_DATABASE_URI = os.environ["SQLALCHEMY_DATABASE_URI"]
